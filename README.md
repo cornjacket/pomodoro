@@ -13,3 +13,6 @@ Images
 
 http://pngimg.com/upload/tamato_PNG42.png
 http://icon-park.com/imagefiles/tomato_green.png
+
+
+fonts and libs folders are used for local development. They have glyphicons and bootstrap.css, angular.min.js, respectively.

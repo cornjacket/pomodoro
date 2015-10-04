@@ -9,7 +9,8 @@
     <meta name="author" content="">
     <!--<link rel="icon" href="../../favicon.ico"> why do we have a favicon? -->
 
-    <link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">   
+    <link rel="stylesheet" type="text/css" href="./libs/bootstrap.min.css">   
+    <!--<link rel="stylesheet" type="text/css" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">   -->
     <title>Pomodoro Demo</title>
 
     <link href="style.css" rel="stylesheet">
@@ -20,13 +21,14 @@
         <div class="container">
           <h1>Pomodoro Demo</h1>
           <div class="columns">         
-            <pomodoro article="art"></pomodoro>            
+            <pomodoro article="art" local-func="callme(msg)"></pomodoro>            
           </div>
         </div>
       </section>
     </main>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js"></script>   
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script>   
+    <script src="./libs/angular.min.js"></script> <!-- 1.4.1 -->   
+    <!--<script src="http://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js"></script>   
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script>   -->
     <script src="app.js"></script>
   </body>
 </html>

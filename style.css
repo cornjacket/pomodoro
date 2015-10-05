@@ -5,7 +5,7 @@
   width: 560px; /*300px;*/ 
   height: 250px; /*150px;*/
   padding: 0;
-  z-index: 99999;
+  z-index: 99998;
   border: 1px solid gray;
   border-radius: 5px;
 
@@ -28,13 +28,15 @@
 
 }
 
-/* i need to have fixed sizes for the header and the body because the headers and trims decrease with the parent tile size changing */
+
+.hide {
+  display: none;
+}
 
 
 #pomodoro_header {
   width: 100%;
   height: 30px; /*17%;*/
-  /*background-color: rgba(192,192,192,1);*/
   padding-top: 1px;
   padding-right: 15px;
 }
@@ -45,22 +47,15 @@
 }
 
 #pomodoro_header img {
-  /*display: inline-block;*/
   margin-left: 12px;
   margin-top: 0px;
-  /*opacity: 0.4;  looks crappy
-  filter: alpha(opacity=40); /* For IE8 and earlier */
-  
-/* should make image border transparent if file has transparent border and image is png, which it is not 
-  background: none !important;
-  border: none !important;*/
 }
 
 #pomodoro_body  {
   width: 97%;
   height: 84%;
   margin: auto;
-
+  position: relative; /* needed for task-display */
   background-color: white; /*rgb(240,240,240); /*white;*/
 }
 
@@ -102,6 +97,13 @@ span.glyphicon {
   font-size: .8em;
 }
 
+.task-display {
+  position: absolute;
+  top: 61px;
+  left: 0;
+  height: 70%; /*120px;*/
+  width: 100%;
+}
 
 
 
@@ -130,4 +132,61 @@ span.glyphicon {
 .pomodoro_header img {
   opacity: 0.4;
   filter: alpha(opacity=40); /* For IE8 and earlier */
+}
+
+
+
+
+#settings {
+  width: 300px;
+  height: 450px;
+  position: fixed;
+  top: 90px;
+  left: 40%;
+  padding: 0;
+  z-index: 99999;
+  border: 1px solid gray;
+  border-radius: 5px;
+
+  box-shadow: 7px 7px 5px  #A0A0A0;
+
+    /* fallback */
+  background-color: #1a82f7;
+  /*background: url(images/linear_bg_2.png);*/
+  background-repeat: repeat-x;
+  /* Safari 4-5, Chrome 1-9 */
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#1a82f7), to(#F0F0F0));
+  /* Safari 5.1, Chrome 10+ */
+  background: -webkit-linear-gradient(top, #1a82f7, #C0D0F0);
+  /* Firefox 3.6+ */
+  background: -moz-linear-gradient(top,#1a1af7, #C0D0F0);
+  /* IE 10 */
+  background: -ms-linear-gradient(top, #1a1af7, #F0F0F0);
+  /* Opera 11.10+ */
+  background: -o-linear-gradient(top, #1a1af7, #F0F0F0);
+}
+
+#settings_header {
+  width: 100%;
+  height: 30px; /*17%;*/
+  padding-top: 1px;
+  padding-right: 15px;
+}
+
+#settings_header .pull-right {
+  margin-left: 10px;
+  color: white;
+}
+
+#settings_header img {
+  margin-left: 12px;
+  margin-top: 0px;
+}
+
+#settings_body  {
+  width: 97%;
+  height: 84%;
+  margin: auto;
+  position: relative; /* needed for task-display */
+  background-color: white; /*rgb(240,240,240); /*white;*/
 }

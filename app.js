@@ -50,7 +50,7 @@ app.controller("MainController", function($scope, $interval) {
   
 app.directive('pomodoro', function() {
   return {
-    replace:   false, //true,
+    replace:   false,
     restrict: 'E',
     scope: {
       article: '=',
@@ -59,10 +59,63 @@ app.directive('pomodoro', function() {
     templateUrl: "pomodoro.html",
     controller: function($scope) {
       console.log("inside pomodoro controller")
-      $scope.mydata = "message"
+
+     
+//Task    Subject   Tomatoes  Priority  Detail
+//Work through  AngularJS *****   ***   http://.....
+      $scope.tasks = [
+        {id: 0, name: "name1", subject: "subject", tomatoes: "1", priority: "10", detail: "details goes here"},
+        {id: 1, name: "name2", subject: "subject", tomatoes: "1", priority: "10", detail: "details goes here"},
+        {id: 2, name: "name3", subject: "subject", tomatoes: "1", priority: "10", detail: "details goes here"},
+        {id: 3, name: "name4", subject: "subject", tomatoes: "1", priority: "10", detail: "details goes here"},
+        {id: 4, name: "name5", subject: "subject", tomatoes: "1", priority: "10", detail: "details goes here"},
+        {id: 5, name: "name6", subject: "subject", tomatoes: "1", priority: "10", detail: "details goes here"},
+        {id: 6, name: "name7", subject: "subject", tomatoes: "1", priority: "10", detail: "details goes here"},
+        {id: 7, name: "name8", subject: "subject", tomatoes: "1", priority: "10", detail: "details goes here"},
+        {id: 8, name: "name9", subject: "subject", tomatoes: "1", priority: "10", detail: "details goes here"},
+        {id: 9, name: "name10", subject: "subject", tomatoes: "1", priority: "10", detail: "details goes here"}
+      ]
+// dont think i need id as an attribute, since tasks is an array, maybe if there is a server backend
+
+      $scope.new_id = 10; // to be used later to add more tasks
+      $scope.displayControl = false
+      $scope.displaySettings = false
+      $scope.mydata = "message" // testing
+
       $scope.newTask = function() {
         console.log("New task called")
+        //
+        //
+        $scope.new_id += 1; // used later
       }
+
+      $scope.rowClick = function(index) {
+        console.log("rowClick() invoked with "+index)
+        $scope.activeRow = index
+      }
+
+      $scope.controlDisplay = function() {
+        console.log("toggleControlDisplay() invoked")
+        $scope.displayControl = true
+      }
+
+      $scope.controlHide = function() {
+        console.log("toggleControlDisplay() invoked")
+        $scope.displayControl = false
+      }
+
+      $scope.settingsDisplay = function() {
+        console.log("settingsDisplay() invoked")
+        $scope.displaySettings = true
+      }
+
+      $scope.settingsHide = function() {
+        console.log("settingsDisplay() invoked")
+        $scope.displaySettings = false
+      }
+
+
+
     }
   }
 })  

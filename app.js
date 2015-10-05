@@ -80,7 +80,10 @@ app.directive('pomodoro', function() {
       $scope.new_id = 10; // to be used later to add more tasks
       $scope.displayControl = false
       $scope.displaySettings = false
+      $scope.childWindowIsActive = false
+
       $scope.mydata = "message" // testing
+
 
       $scope.newTask = function() {
         console.log("New task called")
@@ -91,27 +94,29 @@ app.directive('pomodoro', function() {
 
       $scope.rowClick = function(index) {
         console.log("rowClick() invoked with "+index)
-        $scope.activeRow = index
+        if (!$scope.childWindowIsActive) $scope.activeRow = index
       }
 
       $scope.controlDisplay = function() {
-        console.log("toggleControlDisplay() invoked")
+        console.log("controlDisplay() invoked")
         $scope.displayControl = true
       }
 
       $scope.controlHide = function() {
-        console.log("toggleControlDisplay() invoked")
-        $scope.displayControl = false
+        console.log("controlHide() invoked")
+        if (!$scope.childWindowIsActive) $scope.displayControl = false
       }
 
       $scope.settingsDisplay = function() {
         console.log("settingsDisplay() invoked")
         $scope.displaySettings = true
+        $scope.childWindowIsActive = true
       }
 
       $scope.settingsHide = function() {
-        console.log("settingsDisplay() invoked")
+        console.log("settingsHide() invoked")
         $scope.displaySettings = false
+        $scope.childWindowIsActive = true
       }
 
 
@@ -121,23 +126,10 @@ app.directive('pomodoro', function() {
 })  
   
 
-// i got this off of SO. need to review how the following works
-// http://stackoverflow.com/questions/16310298/if-a-ngsrc-path-resolves-to-a-404-is-there-a-way-to-fallback-to-a-default
-app.directive('errSrc', function() {
-  return {
-    link: function(scope, element, attrs) {
-      element.bind('error', function() {
-        if (attrs.src != attrs.errSrc) {
-          attrs.$set('src', attrs.errSrc);
-        }
-      });
-    }
-  }
-});  
   
   /*
   angular.module('myApp.services', [])
-  .factory('githubService', ['$http', function($http) {
+  .factory('taskService', ['$http', function($http) {
 
     var doRequest = function(username, path) {
       return $http({

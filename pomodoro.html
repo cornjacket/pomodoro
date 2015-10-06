@@ -29,7 +29,7 @@
          <th class='text-center'>Priority</th>
          <th>Detail</th>
        </tr>
-       <tr ng-repeat='item in tasks' ng-click='rowClick($index)' ng-class="{'active':$index == activeRow}">
+       <tr ng-repeat='item in tasks' ng-click='rowClick($index)' ng-class="{'info':$index == activeRow}">
        
          <td class='text-center'>{{ $index + 1 }}</td>
          <td class='text-center'>{{ item.name }}</td>
@@ -165,19 +165,19 @@
 </div>
 
 
-<div class='tomato' ng-click='displayControl()' ng-show='false'>
+<div class='tomato' ng-click='displayControl()' ng-show='currentlyWorking'>
  <a href='#' title='{{hoverMessage}}'>
    <div class='tomato_container'>
-      <div class='red_countdown'><strong>{{tomatoWorkTimeMin}}</strong></div>
+      <div class='red_countdown text-center'><strong>{{tomatoTimeMin}}</strong></div>
       <img src='images/pomodoro.png'>
    </div>
  </a>
 </div>
 
-<div class='tomato' ng-click='displayControl()' ng-show='true'>
+<div class='tomato' ng-click='displayControl()' ng-hide='currentlyWorking'>
  <a href='#' title='{{hoverMessage}}'>
    <div class='tomato_container'>
-      <div class='green_countdown'><strong>{{tomatoRestTimeMin}}</strong></div>
+      <div class='green_countdown text-center'><strong>{{tomatoTimeMin}}</strong></div>
       <img src='images/tomato_green.png'>
    </div>
  </a>

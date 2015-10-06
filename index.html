@@ -16,14 +16,12 @@
     <link href="style.css" rel="stylesheet">
   </head>
   <body>
+    <div class="container">
+      <h1 class='text-center'>Pomodoro Demo</h1>
+    </div>
     <main ng-app="app">
-      <section ng-controller="MainController">
-        <div class="container">
-          <h1>Pomodoro Demo</h1>
-          <div class="columns">         
+      <section ng-controller="MainController">       
             <pomodoro article="art" local-func="callme(msg)"></pomodoro>            
-          </div>
-        </div>
       </section>
     </main>
     <script src="./libs/angular.min.js"></script> <!-- 1.4.1 -->   

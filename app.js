@@ -80,8 +80,7 @@ app.directive('pomodoro', function() {
       //http://www.salamisound.com/6525146-alarm-clock-ringing-pitch
       // this is not supposed to be on the web
       // need to find another file available on web
-      var audio = new Audio('assets/alarm-clock.mp3');
-      audio.play();
+      var audio = new Audio('assets/alarm-clock.mp3');      
 
       $scope.currentlyWorking = true // start off as working - if false, then resting
       $scope.tomatoTimeMin  = ''  // actual value that is displayed on tomato
@@ -96,11 +95,10 @@ app.directive('pomodoro', function() {
               // now change the tomato minute count only when minute count does not equal the
               // starting minute timer. this will have a trailing effect for the tomato
               if (currentTimerMin !== timer) $scope.tomatoTimeMin -= 1
-              currentTimerMin -= 1
-              currentTimerSeconds = 59
+              currentTimerMin -= 1 
+              currentTimerSeconds = 10 //59
             } else {  // end of work or rest period, ie minutes and seconds both === 0                          
-                soundAlarm = true ///////////////////////////////////////
-                console.log("Sound Alarm")
+                if ($scope.settingsAlarmWhenTimerExpires) audio.play();            
                 if ($scope.currentlyWorking) { // the end of a working period so set up the next rest period                              
                   $scope.currentlyWorking   = false
                   timer                     = restTimer
@@ -190,7 +188,6 @@ app.directive('pomodoro', function() {
           $scope.tomatoTimeMin = workTimer
           currentTimerMin      = workTimer
           currentTimerSeconds  = 0
-          //$scope.hoverMessage = currentTask.name +', '+currentTimerMin+' minutes and '+currentTimerSeconds+' seconds'
           $scope.currentlyWorking  = true
           taskIsComplete = false
         }

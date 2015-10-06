@@ -40,9 +40,7 @@ app.directive('pomodoro', function() {
     controller: function($scope, $interval) {
       console.log("inside pomodoro controller")
 
-     
-//Task    Subject   Tomatoes  Priority  Detail
-//Work through  AngularJS *****   ***   http://.....
+      // local storage of tasks. later this could be grabbed from a server
       $scope.tasks = [
         {id: 0, name: "pomodoro", subject: "zipline", tomatoes: "4", priority: "10", detail: "work on basic functionality"},
         {id: 1, name: "tic tac toe", subject: "zipline", tomatoes: "1", priority: "2", detail: "still one way to beat game"},
@@ -50,15 +48,13 @@ app.directive('pomodoro', function() {
         {id: 3, name: "wikipedia viewer", subject: "zipline", tomatoes: "4", priority: "6", detail: "leverage pomodoro"},
         {id: 4, name: "study Angular", subject: "study", tomatoes: "6", priority: "5", detail: "watch videos while working out"},
         {id: 5, name: "simon game", subject: "zipline", tomatoes: "4", priority: "6", detail: ""},
-        {id: 6, name: "gmail clone", subject: "personal", tomatoes: "3", priority: "3", detail: ""},
-        {id: 7, name: "portfolio website", subject: "zipline", tomatoes: "1", priority: "5", detail: ""},
-        {id: 8, name: "blog", subject: "personal", tomatoes: "1", priority: "5", detail: "1 blog per project"}
+        {id: 6, name: "portfolio website", subject: "zipline", tomatoes: "1", priority: "5", detail: ""},
+        {id: 7, name: "blog", subject: "personal", tomatoes: "1", priority: "5", detail: "1 blog per project"}
       ]
-// dont think i need id as an attribute, since tasks is an array, maybe if there is a server backend
 
       var workTimer  = 25  // keep track of value updated by user
       var restTimer = 5
-      var timer            // combined timer used for display
+      var timer            // combined master timer
       var alwaysOnTop   = true
       var alarmWhenTimerExpires = true
       var currentTaskIndex = -1
@@ -81,6 +77,12 @@ app.directive('pomodoro', function() {
       var currentTimerSeconds = 0
       var taskIsComplete = true 
       
+      //http://www.salamisound.com/6525146-alarm-clock-ringing-pitch
+      // this is not supposed to be on the web
+      // need to find another file available on web
+      var audio = new Audio('assets/alarm-clock.mp3');
+      audio.play();
+
       $scope.currentlyWorking = true // start off as working - if false, then resting
       $scope.tomatoTimeMin  = ''  // actual value that is displayed on tomato
       $scope.hoverMessage   = 'Click Me!'
@@ -164,18 +166,20 @@ app.directive('pomodoro', function() {
       }      
 
       $scope.completeTask = function() {
-        $scope.currentlyWorking = false
-        if ($scope.activeRow !== -1) {
-          $scope.tasks.splice($scope.activeRow,$scope.activeRow+1)
-          console.log("currentTaskIndex = "+currentTaskIndex)
-          console.log("$scope.activeRow = "+$scope.activeRow)
-          if (currentTaskIndex === $scope.activeRow) {
-            // marking current tomato as complete
-            $scope.tomatoTimeMin = '' // display nothing on the tomato
-            $scope.hoverMessage  = ''
-          }
-          $scope.activeRow = -1
-        } // otherwise we can give a message, maybe give a confirm message box too
+        if (!childWindowIsActive()) {
+          $scope.currentlyWorking = false
+          if ($scope.activeRow !== -1) {
+            $scope.tasks.splice($scope.activeRow,$scope.activeRow+1)
+            console.log("currentTaskIndex = "+currentTaskIndex)
+            console.log("$scope.activeRow = "+$scope.activeRow)
+            if (currentTaskIndex === $scope.activeRow) {
+              // marking current tomato as complete
+              $scope.tomatoTimeMin = '' // display nothing on the tomato
+              $scope.hoverMessage  = ''
+            }
+            $scope.activeRow = -1
+          } // otherwise we can give a message, maybe give a confirm message box too
+        }
       }
 
       $scope.startTask = function() {
@@ -235,7 +239,7 @@ app.directive('pomodoro', function() {
 
         // get back old values for next time user enters Settings
         $scope.settingsWorkTimer = workTimer
-        $scope.settingsRestTimer = resttTimer
+        $scope.settingsRestTimer = restTimer
         $scope.settingsAlwaysOnTop = alwaysOnTop
         $scope.settingsAlarmWhenTimerExpires = alarmWhenTimerExpires
       }

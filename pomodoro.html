@@ -1,51 +1,51 @@
-<div id='pomodoro_tile' ng-class="{'hide':controlDisplay == false}">
- <div id='pomodoro_header'>
-   <img src='images/pomodoro.png' width='20px'>
-   <a href='#' ng-click="cancelControl()"><span class='pull-right'>X</span></a>
- </div>
- <div id='pomodoro_body'>
-   <!-- Static navbar -->
-   <nav class='navbar navbar-default'>
-     <div class='container'>
-       <div id='navbar' class='navbar-collapse collapse'>
-         <ul class='nav navbar-nav'>
-           <li><a ng-click='newTask()' href='#'><div><span class='glyphicon glyphicon-plus text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>New Task</div></a></li>
-           <li><a ng-click='completeTask()' href='#'><div><span class='glyphicon glyphicon-ok text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Complete</div></a></li>
-           <li><a ng-click='startTask()' href='#'><div><span class='glyphicon glyphicon-time text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Start</div></a></li>
-           <li><a ng-click='localFunc({msg:mydata})' href='#'><div><span class='glyphicon glyphicon-play text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Continue</div></a></li>
-           <li><a ng-click='localFunc({msg:mydata})' href='#'><div><span class='glyphicon glyphicon-pause text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Pause</div></a></li>
-           <li><a ng-click='displaySettings()' href='#'><div><span class='glyphicon glyphicon-wrench text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Settings</div></a></li>
-         </ul>
-       </div><!--/.nav-collapse -->
-     </div><!--/.container-fluid -->
-   </nav>
-   <div class='task-display table-responsive'>  
-     <table class='table table-bordered table-condensed table-hover'>
-       <tr>
-         <th class='text-center'>#</th>
-         <th class='text-center'>Task</th>
-         <th class='text-center'>Subject</th>
-         <th class='text-center'>Tomatoes</th>
-         <th class='text-center'>Priority</th>
-         <th>Detail</th>
-       </tr>
-       <tr ng-repeat='item in tasks' ng-click='rowClick($index)' ng-class="{'info':$index == activeRow}">
-       
-         <td class='text-center'>{{ $index + 1 }}</td>
-         <td class='text-center'>{{ item.name }}</td>
-         <td class='text-center'>{{ item.subject }}</td>
-         <td class='text-center'>{{ item.tomatoes }}</td>
-         <td class='text-center'>{{ item.priority }}</td>
-         <td>{{ item.detail }}</td>       
- 
-       </tr>
-     </table>
-   </div>
+<div id='pomodoro_tile' ng-show='controlDisplay'>
+  <div id='pomodoro_header'>
+    <img src='images/pomodoro.png' width='20px'>
+    <a href='#' ng-click="cancelControl()"><span class='pull-right'>X</span></a>
+  </div>
+  <div id='pomodoro_body'>
+    <!-- Static navbar -->
+    <nav class='navbar navbar-default'>
+      <div class='container'>
+        <div id='navbar' class='navbar-collapse collapse'>
+          <ul class='nav navbar-nav'>
+            <li><a ng-click='newTask()' href='#'><div><span class='glyphicon glyphicon-plus text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>New Task</div></a></li>
+            <li><a ng-click='completeTask()' href='#'><div><span class='glyphicon glyphicon-ok text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Complete</div></a></li>
+            <li><a ng-click='startTask()' href='#'><div><span class='glyphicon glyphicon-time text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Start</div></a></li>
+            <li><a ng-click='localFunc({msg:mydata})' href='#'><div><span class='glyphicon glyphicon-play text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Continue</div></a></li>
+            <li><a ng-click='localFunc({msg:mydata})' href='#'><div><span class='glyphicon glyphicon-pause text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Pause</div></a></li>
+            <li><a ng-click='displaySettings()' href='#'><div><span class='glyphicon glyphicon-wrench text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Settings</div></a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div><!--/.container-fluid -->
+    </nav>
+    <div class='task-display table-responsive'>  
+      <table class='table table-bordered table-condensed table-hover'>
+        <tr>
+          <th class='text-center'>#</th>
+          <th class='text-center'>Task</th>
+          <th class='text-center'>Subject</th>
+          <th class='text-center'>Tomatoes</th>
+          <th class='text-center'>Priority</th>
+          <th>Detail</th>
+        </tr>
+        <tr ng-repeat='item in tasks' ng-click='rowClick($index)' ng-class="{'info':$index == activeRow}">
+         
+          <td class='text-center'>{{ $index + 1 }}</td>
+          <td class='text-center'>{{ item.name }}</td>
+          <td class='text-center'>{{ item.subject }}</td>
+          <td class='text-center'>{{ item.tomatoes }}</td>
+          <td class='text-center'>{{ item.priority }}</td>
+          <td>{{ item.detail }}</td>       
+   
+        </tr>
+      </table>
+    </div>
 
  </div>
 </div>
 
-<div id='settings' ng-class="{'hide':settingsDisplay == false}">
+<div id='settings' ng-show='settingsDisplay'>
   <div id='settings_header'>
     <img src='images/pomodoro.png' width='20px'>
     <a ng-click='cancelSettings()' href='#'><span class='pull-right'>X</span></a>
@@ -101,7 +101,7 @@
   </div>
 </div>
 
-<div id='newTask' ng-class="{'hide':newTaskDisplay == false}">
+<div id='newTask' ng-show='newTaskDisplay'>
   <div id='newTask_header'>
     <img src='images/pomodoro.png' width='20px'>
     <a ng-click='cancelNewTask()' href='#'><span class='pull-right'>X</span></a>

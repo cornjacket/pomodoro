@@ -72,7 +72,7 @@ app.directive('pomodoro', function() {
       $scope.settingsAlarmWhenTimerExpires = true
 
       $scope.currentlyWorking = false // used to determine if task or rest
-      var currentTask = {}
+      //var currentTask = {}
       var currentTimerMin = 25 // real time
       var currentTimerSeconds = 0
       var taskIsComplete = true 
@@ -122,10 +122,10 @@ app.directive('pomodoro', function() {
           }
 
           if (taskIsComplete) {
-            $scope.hoverMessage = currentTask.name +' has finished.'
+            $scope.hoverMessage = tasks[currentTaskIndex].name +' has finished.'
             // maybe mark the row in a different color
           }
-          else $scope.hoverMessage = currentTask.name +', '+currentTimerMin+' minutes and '+currentTimerSeconds+' seconds'
+          else $scope.hoverMessage = tasks[currentTaskIndex].name +', '+currentTimerMin+' minutes and '+currentTimerSeconds+' seconds'
           }  // task is complete
 
           console.log(currentTimerSeconds)
@@ -184,7 +184,7 @@ app.directive('pomodoro', function() {
       $scope.startTask = function() {
         if (!childWindowIsActive() && $scope.activeRow !== -1) {
           currentTaskIndex = $scope.activeRow
-          currentTask = $scope.tasks[currentTaskIndex]
+          //currentTask = $scope.tasks[currentTaskIndex]
           timer                    = workTimer
           $scope.tomatoTimeMin     = workTimer
           currentTimerMin          = workTimer

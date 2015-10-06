@@ -76,6 +76,7 @@ app.directive('pomodoro', function() {
       var currentTimerMin = 25 // real time
       var currentTimerSeconds = 0
       var taskIsComplete = true 
+      var taskInProgress = false
       
       //http://www.salamisound.com/6525146-alarm-clock-ringing-pitch
       // this is not supposed to be on the web
@@ -181,15 +182,22 @@ app.directive('pomodoro', function() {
       }
 
       $scope.startTask = function() {
-        if ($scope.activeRow !== -1) {
+        if (!childWindowIsActive() && $scope.activeRow !== -1) {
           currentTaskIndex = $scope.activeRow
           currentTask = $scope.tasks[currentTaskIndex]
-          timer = workTimer
-          $scope.tomatoTimeMin = workTimer
-          currentTimerMin      = workTimer
-          currentTimerSeconds  = 0
+          timer                    = workTimer
+          $scope.tomatoTimeMin     = workTimer
+          currentTimerMin          = workTimer
+          currentTimerSeconds      = 0
           $scope.currentlyWorking  = true
-          taskIsComplete = false
+          taskIsComplete           = false
+          taskInProgress           = true
+        }
+      }
+
+      $scope.pauseTask = function() {
+        if (!childWindowIsActive()) {
+          taskInProgress = false
         }
       }
 

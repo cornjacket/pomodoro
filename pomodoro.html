@@ -1,7 +1,7 @@
-<div id='pomodoro_tile' ng-class="{'hide':displayControl == false}">
+<div id='pomodoro_tile' ng-class="{'hide':controlDisplay == false}">
  <div id='pomodoro_header'>
    <img src='images/pomodoro.png' width='20px'>
-   <a href='#' ng-click="controlHide()"><span class='pull-right'>X</span></a>
+   <a href='#' ng-click="cancelControl()"><span class='pull-right'>X</span></a>
  </div>
  <div id='pomodoro_body'>
    <!-- Static navbar -->
@@ -10,11 +10,11 @@
        <div id='navbar' class='navbar-collapse collapse'>
          <ul class='nav navbar-nav'>
            <li><a ng-click='newTask()' href='#'><div><span class='glyphicon glyphicon-plus text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>New Task</div></a></li>
-           <li><a ng-click='localFunc({msg:mydata})' href='#'><div><span class='glyphicon glyphicon-ok text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Complete</div></a></li>
-           <li><a ng-click='localFunc({msg:mydata})' href='#'><div><span class='glyphicon glyphicon-time text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Start</div></a></li>
+           <li><a ng-click='completeTask()' href='#'><div><span class='glyphicon glyphicon-ok text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Complete</div></a></li>
+           <li><a ng-click='startTask()' href='#'><div><span class='glyphicon glyphicon-time text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Start</div></a></li>
            <li><a ng-click='localFunc({msg:mydata})' href='#'><div><span class='glyphicon glyphicon-play text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Continue</div></a></li>
            <li><a ng-click='localFunc({msg:mydata})' href='#'><div><span class='glyphicon glyphicon-pause text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Pause</div></a></li>
-           <li><a ng-click='settingsDisplay()' href='#'><div><span class='glyphicon glyphicon-wrench text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Settings</div></a></li>
+           <li><a ng-click='displaySettings()' href='#'><div><span class='glyphicon glyphicon-wrench text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Settings</div></a></li>
          </ul>
        </div><!--/.nav-collapse -->
      </div><!--/.container-fluid -->
@@ -45,25 +45,140 @@
  </div>
 </div>
 
-<div id='settings' ng-class="{'hide':displaySettings == false}">
- <div id='settings_header'>
-   <img src='images/pomodoro.png' width='20px'>
-   <a ng-click='settingsHide()' href='#'><span class='pull-right'>X</span></a>
- </div>
- <div id='settings_body'>
-   <!-- Static navbar -->
+<div id='settings' ng-class="{'hide':settingsDisplay == false}">
+  <div id='settings_header'>
+    <img src='images/pomodoro.png' width='20px'>
+    <a ng-click='cancelSettings()' href='#'><span class='pull-right'>X</span></a>
+  </div>
+  <div id='settings_body'>
+
+    <div class='container-fluid'>
+
+      <div class="row">
+        <div class="col-md-8">
+          Work Timer: (minutes)
+        </div>
+        <div class='col-md-4'>
+          <input type="text" class="form-control" aria-label="..." ng-model='settingsWorkTimer'>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8">
+          Rest Timer: (minutes)
+        </div>
+        <div class='col-md-4'>
+          <input type="text" class="form-control" aria-label="..." ng-model='settingsRestTimer'>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-9">
+          Tomato is always on top:
+        </div>
+        <div class='col-md-3'>
+          <input type="checkbox" aria-label="..." ng-model='settingsAlwaysOnTop'>
+        </div>
+      </div>   
+      <div class="row">
+        <div class="col-md-9">
+          Alarm when timer expires:
+        </div>
+        <div class='col-md-3'>
+          <input type="checkbox" aria-label="..." ng-model='settingsAlarmWhenTimerExpires'>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <button type="button" class="btn btn-primary" ng-click='updateSettings()'>Update</button>
+        </div>
+        <div class='col-md-6'>
+          <button type="button" class="btn btn-default" ng-click='cancelSettings()'>Cancel</button>
+        </div>
+      </div>
 
 
+    </div>
+  </div>
+</div>
 
- </div>
+<div id='newTask' ng-class="{'hide':newTaskDisplay == false}">
+  <div id='newTask_header'>
+    <img src='images/pomodoro.png' width='20px'>
+    <a ng-click='cancelNewTask()' href='#'><span class='pull-right'>X</span></a>
+  </div>
+  <div id='newTask_body'>
+
+    <div class='container-fluid'>
+
+      <div class="row">
+        <div class="col-md-3">
+          Task
+        </div>
+        <div class='col-md-9'>
+          <input type="text" class="form-control" aria-label="..." ng-model='task'>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          Subject
+        </div>
+        <div class='col-md-9'>
+          <input type="text" class="form-control" aria-label="..." ng-model='subject'>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          Number of Tomatoes
+        </div>
+        <div class='col-md-6'>
+          <input type="text" class="form-control" aria-label="..." ng-model='tomatoes'>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          Priority
+        </div>
+        <div class='col-md-6'>
+          <input type="text" class="form-control" aria-label="..." ng-model='priority'>
+        </div>
+      </div>      
+      <div class="row">
+        <div class="col-md-2">
+          Detail
+        </div>
+        <div class='col-md-10'>
+          <input type="text" class="form-control" aria-label="..." ng-model='detail'>
+        </div>
+      </div>      
+      <div class="row">
+        <div class="col-md-6">
+          <button type="button" class="btn btn-primary" ng-click='updateNewTask()'>Update</button>
+        </div>
+        <div class='col-md-6'>
+          <button type="button" class="btn btn-default" ng-click='cancelNewTask()'>Cancel</button>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
 </div>
 
 
-<div id='tomato' ng-click='controlDisplay()'>
- <a href='#' title='Work on Pomodoro zipline, 23.7 minutes remaining'>
+<div class='tomato' ng-click='displayControl()' ng-show='false'>
+ <a href='#' title='{{hoverMessage}}'>
    <div class='tomato_container'>
-      <div class='countdown'><strong>24</strong></div>
+      <div class='red_countdown'><strong>{{tomatoWorkTimeMin}}</strong></div>
       <img src='images/pomodoro.png'>
+   </div>
+ </a>
+</div>
+
+<div class='tomato' ng-click='displayControl()' ng-show='true'>
+ <a href='#' title='{{hoverMessage}}'>
+   <div class='tomato_container'>
+      <div class='green_countdown'><strong>{{tomatoRestTimeMin}}</strong></div>
+      <img src='images/tomato_green.png'>
    </div>
  </a>
 </div>

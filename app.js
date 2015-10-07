@@ -174,7 +174,7 @@ app.directive('pomodoro', function() {
             subject: $scope.subject, 
             tomatoes: $scope.tomatoes, 
             priority: $scope.priority, 
-            detail: $scope.priority
+            detail: $scope.detail
             /* do not create currentMinutes or currentSeconds until task is first run */
           }
           $scope.tasks.push(new_task)

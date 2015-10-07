@@ -12,7 +12,7 @@
             <li><a ng-click='newTask()' href='#'><div><span class='glyphicon glyphicon-plus text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>New Task</div></a></li>
             <li><a ng-click='completeTask()' href='#'><div><span class='glyphicon glyphicon-ok text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Complete</div></a></li>
             <li><a ng-click='startTask()' href='#'><div><span class='glyphicon glyphicon-time text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Start</div></a></li>
-            <li><a ng-click='localFunc({msg:mydata})' href='#'><div><span class='glyphicon glyphicon-play text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Continue</div></a></li>
+            <li><a ng-click='continueTask()' href='#'><div><span class='glyphicon glyphicon-play text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Continue</div></a></li>
             <li><a ng-click='pauseTask()' href='#'><div><span class='glyphicon glyphicon-pause text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Pause</div></a></li>
             <li><a ng-click='displaySettings()' href='#'><div><span class='glyphicon glyphicon-wrench text-center' aria-hidden='true'></span></div><div class='button-caption text-center'>Settings</div></a></li>
           </ul>
@@ -25,7 +25,7 @@
           <th class='text-center'>#</th>
           <th class='text-center'>Task</th>
           <th class='text-center'>Subject</th>
-          <th class='text-center'>Tomatoes</th>
+          <!--<th class='text-center'>Tomatoes</th>-->
           <th class='text-center'>Priority</th>
           <th>Detail</th>
         </tr>
@@ -34,7 +34,7 @@
           <td class='text-center'>{{ $index + 1 }}</td>
           <td class='text-center'>{{ item.name }}</td>
           <td class='text-center'>{{ item.subject }}</td>
-          <td class='text-center'>{{ item.tomatoes }}</td>
+          <!--<td class='text-center'>{{ item.tomatoes }}</td>-->
           <td class='text-center'>{{ item.priority }}</td>
           <td>{{ item.detail }}</td>       
    
@@ -126,14 +126,14 @@
           <input type="text" class="form-control" aria-label="..." ng-model='subject'>
         </div>
       </div>
-      <div class="row">
+      <!--<div class="row">
         <div class="col-md-6">
           Number of Tomatoes
         </div>
         <div class='col-md-6'>
           <input type="text" class="form-control" aria-label="..." ng-model='tomatoes'>
         </div>
-      </div>
+      </div>-->
       <div class="row">
         <div class="col-md-6">
           Priority
@@ -168,7 +168,7 @@
 <div class='tomato' ng-click='displayControl()' ng-show='currentlyWorking'>
  <a href='#' title='{{hoverMessage}}'>
    <div class='tomato_container'>
-      <div class='red_countdown text-center'><strong>{{tomatoTimeMin}}</strong></div>
+      <div class='red_countdown text-center'><strong>{{tomatoTime}}</strong></div>
       <img src='images/pomodoro.png'>
    </div>
  </a>
@@ -177,7 +177,7 @@
 <div class='tomato' ng-click='displayControl()' ng-hide='currentlyWorking'>
  <a href='#' title='{{hoverMessage}}'>
    <div class='tomato_container'>
-      <div class='green_countdown text-center'><strong>{{tomatoTimeMin}}</strong></div>
+      <div class='green_countdown text-center'><strong>{{tomatoTime}}</strong></div>
       <img src='images/tomato_green.png'>
    </div>
  </a>

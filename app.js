@@ -33,8 +33,6 @@ app.directive('pomodoro', function() {
     replace:   false,
     restrict: 'E',
     scope: {
-      article: '=',
-      localFunc: '&'
     },
     templateUrl: "pomodoro.html",
     controller: function($scope, $interval) {
@@ -71,61 +69,80 @@ app.directive('pomodoro', function() {
       $scope.settingsAlwaysOnTop = true
       $scope.settingsAlarmWhenTimerExpires = true
 
-      $scope.currentlyWorking = false // used to determine if task or rest
-      //var currentTask = {}
-      var currentTimerMin = 25 // real time
+      var currentTimerMin     = 25 // real time
       var currentTimerSeconds = 0
-      var taskIsComplete = true 
-      var taskInProgress = false
-      
+      var taskIsComplete      = true 
+      var taskInProgress      = false
+      var turnOffTask         = false
+      var taskHasBeenPaused   = false
+
+
       //http://www.salamisound.com/6525146-alarm-clock-ringing-pitch
       // this is not supposed to be on the web
       // need to find another file available on web
       var audio = new Audio('assets/alarm-clock.mp3');      
 
       $scope.currentlyWorking = true // start off as working - if false, then resting
-      $scope.tomatoTimeMin  = ''  // actual value that is displayed on tomato
+      $scope.tomatoTime     = ''  // actual value that is displayed on tomato - will be minutes or seconds for final minute
       $scope.hoverMessage   = 'Click Me!'
 
-      // downcounting the seonds
+      // downcounting the seconds
       $interval(function(){
 
-        if (!taskIsComplete) {
+        //console.log("DRT taskInProgress ="+taskInProgress)
+        //console.log("DRT currentlyWorking ="+$scope.currentlyWorking)
+
+        if (turnOffTask) { // flag from completeTask to this handler to stop counting. 
+            // Due to the asynchronous nature of completeTask(), there may be a remote chance
+            // that changing a variable in that routine can have an unpredictable result
+            // inside this routine. There fore instead of changing the variable in there, we
+            // send a message to change the variables here
+            $scope.currentlyWorking = true  // turn tomato red
+            taskInProgress = false
+            taskIsComplete = true
+            turnOffTask    = false
+        }
+
+        if (!taskIsComplete && taskInProgress) {
           if (currentTimerSeconds === 0) {
             if (currentTimerMin !== 0) { // just counted down a minute, ie seconds === 0, but minutes !== 0                            
               // now change the tomato minute count only when minute count does not equal the
               // starting minute timer. this will have a trailing effect for the tomato
-              if (currentTimerMin !== timer) $scope.tomatoTimeMin -= 1
+              if (currentTimerMin !== timer) $scope.tomatoTime -= 1
               currentTimerMin -= 1 
-              currentTimerSeconds = 10 //59
+              currentTimerSeconds = 60
             } else {  // end of work or rest period, ie minutes and seconds both === 0                          
                 if ($scope.settingsAlarmWhenTimerExpires) audio.play();            
-                if ($scope.currentlyWorking) { // the end of a working period so set up the next rest period                              
-                  $scope.currentlyWorking   = false
+                if ($scope.currentlyWorking) { // the end of a working period so set up the next rest period
+
+                  $scope.currentlyWorking   = false // change to rest, display green tomato
                   timer                     = restTimer
                   currentTimerMin           = timer 
+                  $scope.tomatoTime         = currentTimerMin
                 }
                 else { // the end of a resting period and maybe the end of a task                  
                   // at this point instead of ending the task we should check the number
                   // of tomatoes and decrement, if it is zero then we should go ahead and
                   // end the task, otherwise we should change currently 
                   // working to true again
-                  $scope.tomatoTimeMin    = ""
+                  $scope.tomatoTime       = ""
                   taskIsComplete          = true
+                  taskInProgress          = false
 
                   // make the tomato red again regardless if there is anothr work period
                   $scope.currentlyWorking = true
                 }
               }            
           } else {            
-              currentTimerSeconds = (currentTimerSeconds -1)%60
+              currentTimerSeconds = currentTimerSeconds -1
+              if (currentTimerMin === 0) $scope.tomatoTime = currentTimerSeconds; // display final countdown in seconds
           }
 
           if (taskIsComplete) {
-            $scope.hoverMessage = tasks[currentTaskIndex].name +' has finished.'
+            $scope.hoverMessage = $scope.tasks[currentTaskIndex].name +' has finished.'
             // maybe mark the row in a different color
           }
-          else $scope.hoverMessage = tasks[currentTaskIndex].name +', '+currentTimerMin+' minutes and '+currentTimerSeconds+' seconds'
+          else $scope.hoverMessage = $scope.tasks[currentTaskIndex].name +', '+currentTimerMin+' minutes and '+currentTimerSeconds+' seconds'
           }  // task is complete
 
           console.log(currentTimerSeconds)
@@ -166,39 +183,72 @@ app.directive('pomodoro', function() {
 
       $scope.completeTask = function() {
         if (!childWindowIsActive()) {
-          $scope.currentlyWorking = false
           if ($scope.activeRow !== -1) {
+            $scope.hoverMessage =  $scope.tasks[$scope.activeRow].name+' has been completed.' 
+            if (currentTaskIndex === $scope.activeRow) { // removing a task that is active
+              turnOffTask    = true // send message to setinterval to turn things off
+              $scope.tomatoTime = '' // display nothing on the tomato
+            }                    
             $scope.tasks.splice($scope.activeRow,$scope.activeRow+1)
             console.log("currentTaskIndex = "+currentTaskIndex)
             console.log("$scope.activeRow = "+$scope.activeRow)
-            if (currentTaskIndex === $scope.activeRow) {
-              // marking current tomato as complete
-              $scope.tomatoTimeMin = '' // display nothing on the tomato
-              $scope.hoverMessage  = ''
-            }
             $scope.activeRow = -1
-          } // otherwise we can give a message, maybe give a confirm message box too
-        }
+          } else {
+            console.log("completeTask: no task selected")
+          }
+        } // otherwise we can give a message, maybe give a confirm message box too
       }
 
       $scope.startTask = function() {
-        if (!childWindowIsActive() && $scope.activeRow !== -1) {
-          currentTaskIndex = $scope.activeRow
-          //currentTask = $scope.tasks[currentTaskIndex]
-          timer                    = workTimer
-          $scope.tomatoTimeMin     = workTimer
-          currentTimerMin          = workTimer
-          currentTimerSeconds      = 0
-          $scope.currentlyWorking  = true
-          taskIsComplete           = false
-          taskInProgress           = true
+        if (!childWindowIsActive()) { // && $scope.activeRow !== -1 && !taskInProgress) {
+          if ($scope.activeRow !== -1) {
+            if (!taskInProgress) {
+              currentTaskIndex         = $scope.activeRow
+              timer                    = workTimer
+              $scope.tomatoTime        = workTimer
+              currentTimerMin          = workTimer
+              currentTimerSeconds      = 0
+              $scope.currentlyWorking  = true
+              taskIsComplete           = false
+              taskInProgress           = true
+            } else {
+              console.log("startTask: task is already in progress")
+            }
+          } else {
+            console.log("startTask: No row selected")
+          }
+        }
+
+      }
+
+      // there could be some async issues with this function
+      $scope.pauseTask = function() {
+        if (!childWindowIsActive()) {
+          if (taskInProgress) {
+            taskHasBeenPaused = true
+            taskInProgress    = false
+            // I believe all the necessary run time info should be saved within the tasks list
+            // actually time info needs to be stored in tasks
+            $scope.hoverMessage = $scope.tasks[currentTaskIndex].name + " has been paused" 
+          } else {
+            console.log('pauseTask: no task in progress')
+          }
         }
       }
 
-      $scope.pauseTask = function() {
+      // there could be some async issues with this function
+      $scope.continueTask = function() {
         if (!childWindowIsActive()) {
-          taskInProgress = false
-        }
+          if (taskHasBeenPaused) {
+            taskHasBeenPaused = false
+            taskInProgress    = true
+            // I believe all the necessary run time info should be saved within the tasks list
+            // actually time info needs to be stored in tasks
+            $scope.hoverMessage = $scope.tasks[currentTaskIndex].name + " has been continued" 
+          } else {
+          console.log("continueTask: Unable to continue since no task has been paused")
+          }
+        } 
       }
 
       $scope.rowClick = function(index) {
@@ -231,9 +281,9 @@ app.directive('pomodoro', function() {
       $scope.updateSettings = function() {
         $scope.settingsDisplay = false
         
-        workTimer = $scope.settingsWorkTimer
-        restTimer = $scope.settingsRestTimer
-        alwaysOnTop = $scope.settingsAlwaysOnTop
+        workTimer             = $scope.settingsWorkTimer
+        restTimer             = $scope.settingsRestTimer
+        alwaysOnTop           = $scope.settingsAlwaysOnTop
         alarmWhenTimerExpires = $scope.settingsAlarmWhenTimerExpires
 
       }

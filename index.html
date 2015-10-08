@@ -16,14 +16,15 @@
     <link href="style.css" rel="stylesheet">
   </head>
   <body>
-    <div class="container">
-      <h1 class='text-center'>Pomodoro Demo</h1>
-    </div>
+    <img id="darth_stewie" src="images/Darth_Stewie7.gif">
     <main ng-app="app">
       <section ng-controller="MainController"> 
-        <p>{{message}}</p>
-        <input type='text' ng-model='event'>
-        <h1 class='text-center'>Pomodoro Demo {{event}}</h1>
+     <div id="instructions">
+       <blockquote class="rectangle-speech-border">
+         <h2>{{message}}</h2>
+       </blockquote>
+     </div>
+
         <pomodoro article="art" event="event"></pomodoro>            
       </section>
     </main>

@@ -55,6 +55,11 @@
     <div class='container-fluid'>
 
       <div class="row">
+        <div class="col-md-12">
+          <h4 class='text-center'>Settings</h4>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-md-8">
           Work Timer: (minutes)
         </div>
@@ -87,7 +92,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div id="settings_buttons" class="row">
         <div class="col-md-6">
           <button type="button" class="btn btn-primary" ng-click='updateSettings()'>Update</button>
         </div>
@@ -109,7 +114,11 @@
   <div id='newTask_body'>
 
     <div class='container-fluid'>
-
+      <div class="row">
+        <div class="col-md-12">
+          <h4 class='text-center'>New Task</h4>
+        </div>
+      </div>
       <div class="row">
         <div class="col-md-3">
           Task
@@ -150,7 +159,7 @@
           <input type="text" class="form-control" aria-label="..." ng-model='detail'>
         </div>
       </div>      
-      <div class="row">
+      <div id="newTask_buttons" class="row">
         <div class="col-md-6">
           <button type="button" class="btn btn-primary" ng-click='updateNewTask()'>Update</button>
         </div>
@@ -165,20 +174,20 @@
 </div>
 
 
-<div class='tomato' ng-click='displayControl()' ng-show='currentlyWorking'>
- <a href='#' title='{{hoverMessage}}'>
-   <div class='tomato_container'>
+<a href='#' title='{{hoverMessage}}'>
+  <div class='tomato' ng-click='displayControl()' ng-show='currentlyWorking'>
+    <div class='tomato_container'>
       <div class='red_countdown text-center'><strong>{{tomatoTime}}</strong></div>
       <img src='images/pomodoro.png'>
-   </div>
- </a>
-</div>
+    </div>
+  </div>
+</a>
 
-<div class='tomato' ng-click='displayControl()' ng-hide='currentlyWorking'>
- <a href='#' title='{{hoverMessage}}'>
-   <div class='tomato_container'>
+<a href='#' title='{{hoverMessage}}'> 
+  <div class='tomato' ng-click='displayControl()' ng-hide='currentlyWorking'>
+    <div class='tomato_container'>
       <div class='green_countdown text-center'><strong>{{tomatoTime}}</strong></div>
       <img src='images/tomato_green.png'>
-   </div>
- </a>
-</div>
+    </div>
+  </div>
+</a>

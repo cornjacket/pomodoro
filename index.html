@@ -20,8 +20,11 @@
       <h1 class='text-center'>Pomodoro Demo</h1>
     </div>
     <main ng-app="app">
-      <section ng-controller="MainController">       
-            <pomodoro article="art" local-func="callme(msg)"></pomodoro>            
+      <section ng-controller="MainController"> 
+        <p>{{message}}</p>
+        <input type='text' ng-model='event'>
+        <h1 class='text-center'>Pomodoro Demo {{event}}</h1>
+        <pomodoro article="art" event="event"></pomodoro>            
       </section>
     </main>
     <script src="./libs/angular.min.js"></script> <!-- 1.4.1 -->   

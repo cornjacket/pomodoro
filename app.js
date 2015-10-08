@@ -24,7 +24,33 @@ app.controller("MainController", function($scope, $interval) {
     upvotes: "3"
     
   }
-  
+
+  var messages = [
+        "Click the tomato.",
+        "Very good. Now click on Settings.",
+        "Set the both the Work Timer and the Reset Timer to 2 minute. Then click Update.",
+        "Select a task to run and click Start.",
+        "The tomato displays the minutes. Hover over the tomato to see the message. Then click Pause and you can hover over the tomato again. Then click Continue.",    
+        "While we're waiting for the timer, select New Task.",
+        "Fill out the new task and click Update.",
+        "Very good. Close the control window by clicking on the X",        
+        "Congratulation!! You have finished the Tomato tutorial." // How do I get this to display
+      ]
+
+  var current_state = 0
+  $scope.message = messages[0]
+
+      $interval(function(){        
+        if (current_state <= 7) {
+          $scope.message = messages[current_state]
+          if ($scope.event === current_state + 1) current_state+=1
+        }
+        if ($scope.event == "REST PERIOD HAS BEGUN") $scope.message = "The Work period has ended and the Reset period has started. Notice the tomato is green now."
+        if ($scope.event == "LAST MINUTE") $scope.message = "For the last minute the seconds are displayed."
+        if ($scope.event == "TASK HAS FINISHED") $scope.message = "The task has finished. Hit Complete to remove it from the task list."      
+        console.log(current_state)
+      }, 1000);       
+
 });
 
   
@@ -33,6 +59,7 @@ app.directive('pomodoro', function() {
     replace:   false,
     restrict: 'E',
     scope: {
+      event: '='
     },
     templateUrl: "pomodoro.html",
     controller: function($scope, $interval) {
@@ -119,6 +146,7 @@ app.directive('pomodoro', function() {
                   timer                     = restTimer
                   currentTimerMin           = timer 
                   $scope.tomatoTime         = currentTimerMin
+                  $scope.event              = "REST PERIOD HAS BEGUN"
                 }
                 else { // the end of a resting period and maybe the end of a task                  
                   // at this point instead of ending the task we should check the number
@@ -135,18 +163,22 @@ app.directive('pomodoro', function() {
               }            
           } else {            
               currentTimerSeconds = currentTimerSeconds -1
-              if (currentTimerMin === 0) $scope.tomatoTime = currentTimerSeconds; // display final countdown in seconds
+              if (currentTimerMin === 0) {
+                $scope.tomatoTime = currentTimerSeconds; // display final countdown in seconds
+                $scope.event      = "LAST MINUTE"
+              }
           }
 
           if (taskIsComplete) {
             $scope.hoverMessage = $scope.tasks[currentTaskIndex].name +' has finished.'
+            $scope.event        = "TASK HAS FINISHED"
             // maybe mark the row in a different color
           }
           else $scope.hoverMessage = $scope.tasks[currentTaskIndex].name +', '+currentTimerMin+' minutes and '+currentTimerSeconds+' seconds'
           }  // task is complete
 
-          console.log(currentTimerSeconds)
-        }, 1000);       
+        console.log(currentTimerSeconds)
+      }, 1000);       
 
       $scope.newTask = function() {
         if (!childWindowIsActive()) {
@@ -158,12 +190,15 @@ app.directive('pomodoro', function() {
           $scope.priority = ''
           $scope.detail = ''          
           $scope.newTaskDisplay = true
+          $scope.event = 6
+
         }
       }
 
       $scope.cancelNewTask = function() {
           console.log("cancelNewTask() invoked")
           $scope.newTaskDisplay = false
+          $scope.event = 8
       }
 
       $scope.updateNewTask = function() {
@@ -179,6 +214,7 @@ app.directive('pomodoro', function() {
           }
           $scope.tasks.push(new_task)
           $scope.newTaskDisplay = false
+          $scope.event = 7
       }      
 
       $scope.completeTask = function() {
@@ -193,6 +229,7 @@ app.directive('pomodoro', function() {
             console.log("currentTaskIndex = "+currentTaskIndex)
             console.log("$scope.activeRow = "+$scope.activeRow)
             $scope.activeRow = -1
+            $scope.event = 9
           } else {
             console.log("completeTask: no task selected")
           }
@@ -200,7 +237,7 @@ app.directive('pomodoro', function() {
       }
 
       $scope.startTask = function() {
-        if (!childWindowIsActive()) { // && $scope.activeRow !== -1 && !taskInProgress) {
+        if (!childWindowIsActive()) { 
           if ($scope.activeRow !== -1) {
             if (!taskInProgress) {
               currentTaskIndex         = $scope.activeRow
@@ -211,6 +248,7 @@ app.directive('pomodoro', function() {
               $scope.currentlyWorking  = true
               taskIsComplete           = false
               taskInProgress           = true
+              $scope.event             = 4
             } else {
               console.log("startTask: task is already in progress")
             }
@@ -218,7 +256,6 @@ app.directive('pomodoro', function() {
             console.log("startTask: No row selected")
           }
         }
-
       }
 
       // there could be some async issues with this function
@@ -227,6 +264,7 @@ app.directive('pomodoro', function() {
           if (taskInProgress) {
             taskHasBeenPaused = true
             taskInProgress    = false
+            $scope.event      = 10
             // I believe all the necessary run time info should be saved within the tasks list
             // actually time info needs to be stored in tasks
             $scope.hoverMessage = $scope.tasks[currentTaskIndex].name + " has been paused" 
@@ -242,6 +280,7 @@ app.directive('pomodoro', function() {
           if (taskHasBeenPaused) {
             taskHasBeenPaused = false
             taskInProgress    = true
+            $scope.event      = 5
             // I believe all the necessary run time info should be saved within the tasks list
             // actually time info needs to be stored in tasks
             $scope.hoverMessage = $scope.tasks[currentTaskIndex].name + " has been continued" 
@@ -255,18 +294,21 @@ app.directive('pomodoro', function() {
         if (!childWindowIsActive()) {
           console.log("rowClick() invoked with "+index)
           $scope.activeRow = index
+          $scope.event     = 11     
         }
       }
 
       $scope.displayControl = function() {
         console.log("displayControl() invoked")
         $scope.controlDisplay = true
+        $scope.event          = 1
       }
 
       $scope.cancelControl = function() {
         if (!childWindowIsActive()) {
           console.log("cancelControl() invoked")
           $scope.controlDisplay = false
+          $scope.event          = 12
         }
       }
 
@@ -274,9 +316,9 @@ app.directive('pomodoro', function() {
         if (!childWindowIsActive()) {
           console.log("displaySettings() invoked")
           $scope.settingsDisplay = true
+          $scope.event           = 2
         }
       }
-
 
       $scope.updateSettings = function() {
         $scope.settingsDisplay = false
@@ -285,7 +327,7 @@ app.directive('pomodoro', function() {
         restTimer             = $scope.settingsRestTimer
         alwaysOnTop           = $scope.settingsAlwaysOnTop
         alarmWhenTimerExpires = $scope.settingsAlarmWhenTimerExpires
-
+        $scope.event          = 3
       }
 
       $scope.cancelSettings = function() {
@@ -297,6 +339,7 @@ app.directive('pomodoro', function() {
         $scope.settingsRestTimer = restTimer
         $scope.settingsAlwaysOnTop = alwaysOnTop
         $scope.settingsAlarmWhenTimerExpires = alarmWhenTimerExpires
+        $scope.event = 13
       }
 
       function childWindowIsActive() {

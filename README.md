@@ -14,5 +14,7 @@ Images
 http://pngimg.com/upload/tamato_PNG42.png
 http://icon-park.com/imagefiles/tomato_green.png
 
+Darth Stewie
+http://s3.amazonaws.com/rapgenius/Darth_Stewie_by_Creator8979.jpg
 
 fonts and libs folders are used for local development. They have glyphicons and bootstrap.css, angular.min.js, respectively.

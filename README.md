@@ -9,6 +9,9 @@ I used the following as inspiration for the ui of this project.
 
 http://www.addictivetips.com/windows-tips/assign-multiple-pomodoros-to-tasks-view-work-productivity-report-flowkeeper/
 
+I used this to modify the image of Darth Stewie, to make it have a transparent background
+http://www190.lunapic.com/editor/
+
 Images
 
 http://pngimg.com/upload/tamato_PNG42.png

@@ -372,7 +372,7 @@ span.glyphicon {
 .rectangle-speech-border > :first-child:after {
   content:"";
   position:absolute;
-  bottom: -30px;
+  bottom: -29px;
   left:78px;
   width:22px;
   height:32px;

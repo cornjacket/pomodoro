@@ -44,7 +44,9 @@ app.controller("MainController", function($scope, $interval) {
 
 });
 
-  
+
+
+
 app.directive('pomodoro', function() {
   return {
     replace:   false,
@@ -58,10 +60,10 @@ app.directive('pomodoro', function() {
 
       // local storage of tasks. later this could be grabbed from a server
       $scope.tasks = [
-        {id: 0, name: "pomodoro", subject: "zipline", tomatoes: "4", priority: "10", detail: "work on basic functionality"},
-        {id: 1, name: "tic tac toe", subject: "zipline", tomatoes: "1", priority: "2", detail: "still one way to beat game"},
-        {id: 2, name: "calculalor", subject: "zipline", tomatoes: "5", priority: "7", detail: "leverage pomodoro"},
-        {id: 3, name: "wikipedia viewer", subject: "zipline", tomatoes: "4", priority: "6", detail: "leverage pomodoro"}
+        {id: 0, name: "pomodoro", priority: "10", detail: "work on basic functionality"},
+        {id: 1, name: "tic tac toe", priority: "2", detail: "still one way to beat game"},
+        {id: 2, name: "calculalor", priority: "7", detail: "leverage pomodoro"},
+        {id: 3, name: "wikipedia", priority: "6", detail: "leverage pomodoro"}
       ]
 
       var workTimer  = 25  // keep track of value updated by user
@@ -99,6 +101,7 @@ app.directive('pomodoro', function() {
       $scope.currentlyWorking = true // start off as working - if false, then resting
       $scope.tomatoTime     = ''  // actual value that is displayed on tomato - will be minutes or seconds for final minute
       $scope.hoverMessage   = 'Click Me!'
+
 
       // downcounting the seconds
       $interval(function(){

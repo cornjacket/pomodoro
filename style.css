@@ -94,8 +94,6 @@ html {
 
 
 .nav li {
-  /*position: relative; /* didnt change anything */
- /* background-color: blue;*/
  width: 85px; /* making the li have the width makes it so that the buttons dont slide down */
 }
 
@@ -121,14 +119,43 @@ span.glyphicon {
   font-size: .8em;
 }
 
-.task-display {
+.task-header {
   position: absolute;
   top: 61px;
   left: 0;
-  height: 70%; /*120px;*/
+  height: 30px;
+  width: 100%;
+}  
+
+.task-display {
+  position: absolute;
+  top: 91px;
+  left: 0;
+  height: 110px;
   width: 100%;
 }
 
+/***********************************************************************/
+/* My fixed header table is based on the following fixed header code. I modified to break up the tr and th but I dont think that is neccessary */
+/*http://www.bootply.com/JnOYtO9xzn*/
+
+.table-fixed thead {
+  width: 97%;
+}
+.table-fixed tbody {
+  /*height: 230px;*/
+  overflow-y: auto;
+  width: 100%;
+}
+.table-fixed thead, .table-fixed tbody, .table-fixed tr, .table-fixed td, .table-fixed th {
+  display: block;
+}
+.table-fixed tbody td, .table-fixed thead > tr> th {
+  float: left;
+  border-bottom-width: 0;
+}
+
+/* ********************************************************************/
 /* tomato */
 .tomato {
   position: fixed;

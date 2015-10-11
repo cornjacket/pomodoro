@@ -119,6 +119,7 @@ span.glyphicon {
   font-size: .8em;
 }
 
+
 .task-header {
   position: absolute;
   top: 61px;
@@ -157,10 +158,16 @@ span.glyphicon {
 
 /* ********************************************************************/
 /* tomato */
-.tomato {
+.red_tomato {
   position: fixed;
   right: 5%;
   top: 5%;
+}
+
+.green_tomato {
+  position: fixed;
+  right: 5%;
+  top: 6%;
 }
 
 .tomato_container {
@@ -168,7 +175,6 @@ span.glyphicon {
 }
 
 .tomato_container img {
-  width: 60px;
   transition: 0.4s;
 }
 
@@ -180,12 +186,20 @@ span.glyphicon {
   font-size: 1.2em;
 }
 
+.red_single_countdown {
+  left: 24px;
+}
+
 .green_countdown {
   position: absolute;
-  top: 20px;
-  left: 23px;
+  top: 16px;
+  left: 16px;
   color: black;
-  font-size: 1.4em;
+  font-size: 1.2em;
+}
+
+.green_single_countdown {
+  left: 20px;
 }
 
 .pomodoro_header img {
@@ -198,7 +212,7 @@ span.glyphicon {
 
 #settings {
   width: 300px;
-  height: 450px;
+  height: 350px;
   position: fixed;
   top: 90px;
   right: 20%;
@@ -243,8 +257,8 @@ span.glyphicon {
 }
 
 #settings_body  {
-  width: 97%;
-  height: 84%;
+  width: 96%;
+  height: 89%;
   margin: auto;
   position: relative; /* needed for task-display */
   background-color: white;
@@ -253,7 +267,7 @@ span.glyphicon {
 
 /* this is not working, not sure why */
 #settings_buttons, #newTask_buttons {
-  margin-top: 50px;
+  padding-top: 70px;
 }
 
 
@@ -265,7 +279,7 @@ span.glyphicon {
 
 #newTask {
   width: 300px;
-  height: 450px;
+  height: 350px;
   position: fixed;
   top: 90px;
   right: 25%;
@@ -310,8 +324,8 @@ span.glyphicon {
 }
 
 #newTask_body  {
-  width: 97%;
-  height: 84%;
+  width: 96%;
+  height: 89%;
   margin: auto;
   position: relative; /* needed for task-display */
   background-color: white;

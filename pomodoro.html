@@ -22,70 +22,43 @@
 
 
 
-<div class="container-fluid">
-  <div class="row">
-      <div class="panel panel-default task-header">
+    <div class="container-fluid">
+      <div class="row">
+          <div class="panel panel-default task-header">
 
-        <table class="table table-fixed">
-          <thead>
-            <tr>
-              <!--<th class="col-xs-2">#</th><th class="col-xs-8">Name</th><th class="col-xs-2">Points</th>-->
-              <th class='col-xs-1 text-center'>#</th>
-              <th class='col-xs-3 text-center'>Task</th>        
-              <th class='col-xs-2 text-center'>Priority</th>
-              <th class='col-xs-6'>Detail</th>
+            <table class="table table-fixed">
+              <thead>
+                <tr>
+                  <!--<th class="col-xs-2">#</th><th class="col-xs-8">Name</th><th class="col-xs-2">Points</th>-->
+                  <th class='col-xs-1 text-center'>#</th>
+                  <th class='col-xs-3 text-center'>Task</th>        
+                  <th class='col-xs-2 text-center'>Priority</th>
+                  <th class='col-xs-6'>Detail</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+      </div>
+      <div class="row">
+          <div class="panel panel-default task-display table-responsive">
+
+            <table class="table table-fixed">
+
+              <tbody>
+
+            <tr ng-repeat='item in tasks' ng-click='rowClick($index)' ng-class="{'info':$index == activeRow}">
+              <td class='col-xs-1 text-center'>{{ $index + 1 }}</td>
+              <td class='col-xs-3 text-center'>{{ truncate(item.name,18) }}</td>
+              
+              <td class='col-xs-2 text-center'>{{ truncate(item.priority,3) }}</td>
+              <td class='col-xs-6'>{{ item.detail }}</td>       
             </tr>
-          </thead>
-        </table>
+
+              </tbody>
+            </table>
+          </div>
       </div>
-  </div>
-  <div class="row">
-      <div class="panel panel-default task-display table-responsive">
-
-        <table class="table table-fixed">
-
-          <tbody>
-
-        <tr ng-repeat='item in tasks' ng-click='rowClick($index)' ng-class="{'info':$index == activeRow}">
-          <td class='col-xs-1 text-center'>{{ $index + 1 }}</td>
-          <td class='col-xs-3 text-center'>{{ item.name }}</td>
-          
-          <td class='col-xs-2 text-center'>{{ item.priority }}</td>
-          <td class='col-xs-6'>{{ item.detail }}</td>       
-        </tr>
-
-          </tbody>
-        </table>
-      </div>
-  </div>
-</div>
-
-
-<!--
-    <div class='task-display table-responsive'>  
-      <table class='table table-bordered table-condensed table-hover'>
-        <tr>
-        <tr>
-          <th class='text-center'>#</th>
-          <th class='text-center'>Task</th>
-          <th class='text-center'>Subject</th>
-          
-          <th class='text-center'>Priority</th>
-          <th>Detail</th>
-        </tr>
-        <tr ng-repeat='item in tasks' ng-click='rowClick($index)' ng-class="{'info':$index == activeRow}">
-          <td class='text-center'>{{ $index + 1 }}</td>
-          <td class='text-center'>{{ item.name }}</td>
-          <td class='text-center'>{{ item.subject }}</td>
-          
-          <td class='text-center'>{{ item.priority }}</td>
-          <td>{{ item.detail }}</td>       
-        </tr>
-      </table>
     </div>
--->
-    
-
 
  </div>
 </div>
@@ -130,7 +103,7 @@
       </div>
 
       <div id="settings_buttons" class="row">
-        <div class="col-md-6">
+        <div class="col-md-offset-2 col-md-4">
           <button type="button" class="btn btn-primary" ng-click='updateSettings()'>Update</button>
         </div>
         <div class='col-md-6'>
@@ -181,7 +154,7 @@
         </div>
       </div>      
       <div id="newTask_buttons" class="row">
-        <div class="col-md-6">
+        <div class="col-md-offset-2 col-md-4">
           <button type="button" class="btn btn-primary" ng-click='updateNewTask()'>Update</button>
         </div>
         <div class='col-md-6'>
@@ -196,19 +169,19 @@
 
 
 <a href='#' title='{{hoverMessage}}'>
-  <div class='tomato' ng-click='displayControl()' ng-show='currentlyWorking'>
+  <div class='red_tomato' ng-click='displayControl()' ng-show='currentlyWorking'>
     <div class='tomato_container'>
-      <div class='red_countdown text-center'><strong>{{tomatoTime}}</strong></div>
-      <img src='images/pomodoro.png'>
+      <div class='red_countdown text-center' ng-class="{'red_single_countdown':singleCountdown}"><strong>{{tomatoTime}}</strong></div>
+      <img src='images/pomodoro.png' width='60px'>
     </div>
   </div>
 </a>
 
 <a href='#' title='{{hoverMessage}}'> 
-  <div class='tomato' ng-click='displayControl()' ng-hide='currentlyWorking'>
+  <div class='green_tomato' ng-click='displayControl()' ng-hide='currentlyWorking'>
     <div class='tomato_container'>
-      <div class='green_countdown text-center'><strong>{{tomatoTime}}</strong></div>
-      <img src='images/tomato_green.png'>
+      <div class='green_countdown text-center' ng-class="{'green_single_countdown':singleCountdown}"><strong>{{tomatoTime}}</strong></div>
+      <img src='images/tomato_green.png' width='52px'>
     </div>
   </div>
 </a>

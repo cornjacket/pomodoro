@@ -20,7 +20,7 @@ app.controller("MainController", function($scope, $interval) {
         "Excellent!! Now click on Settings.",
         "Very Good. Now set both timers to 1 minute and click Update. And be quick about it.",
         "Most impressive. Now select a task to run and click Start.",
-        "Good Choice!! Click Pause and hover over the tomato. Then click Continue.",    
+        "Excellent Choice!! Click Pause and hover over the tomato. Then click Continue.",    
         "While we're waiting for the timer, select New Task.",
         "Fill out the fields and click Update. And don't dilly dally!!",
         "Very good. Scroll down to see it has been added. Now close the dashboard.",
@@ -46,8 +46,28 @@ app.controller("MainController", function($scope, $interval) {
 
 
 
+  
+app.factory('tasks', function() {
 
-app.directive('pomodoro', function() {
+  var task_list = [
+    {id: 0, name: "tps report", priority: "10", detail: "emperor has been asking about this"},
+    {id: 1, name: "get cape pressed", priority: "2", detail: "bounty hunter meeting @ 1400 hours"},
+    {id: 2, name: "saber practice", priority: "7", detail: "find new partner. last one dead."}, // need to clip strings that are too long
+    {id: 3, name: "new death star", priority: "6", detail: "make sure all vents are sealable in new design"}
+  ]
+
+  var get_tasks = function() {
+    return task_list
+  }
+  
+  return {
+    get: function() { return get_tasks() }
+  };
+
+});
+
+
+app.directive('pomodoro', function(tasks) {
   return {
     replace:   false,
     restrict: 'E',
@@ -55,16 +75,22 @@ app.directive('pomodoro', function() {
       event: '='
     },
     templateUrl: "pomodoro.html",
-    controller: function($scope, $interval) {
+    controller: function($scope, $interval,tasks) {
       console.log("inside pomodoro controller")
 
-      // local storage of tasks. later this could be grabbed from a server
-      $scope.tasks = [
-        {id: 0, name: "pomodoro", priority: "10", detail: "work on basic functionality"},
-        {id: 1, name: "tic tac toe", priority: "2", detail: "still one way to beat game"},
-        {id: 2, name: "calculalor", priority: "7", detail: "leverage pomodoro"},
-        {id: 3, name: "wikipedia", priority: "6", detail: "leverage pomodoro"}
-      ]
+      $scope.tasks = tasks.get()
+
+
+      $scope.truncate = function(str, num) {
+      // Clear out that junk in your trunk
+        if (str.length <= num) {
+          return str;
+        }
+        // else
+        var trunc_str = str.slice(0,num-3) + "...";
+        return trunc_str;
+      }
+
 
       var workTimer  = 25  // keep track of value updated by user
       var restTimer = 5
@@ -127,7 +153,7 @@ app.directive('pomodoro', function() {
               // starting minute timer. this will have a trailing effect for the tomato
               if (currentTimerMin !== timer) $scope.tomatoTime -= 1
               currentTimerMin -= 1 
-              currentTimerSeconds = 60
+              currentTimerSeconds = 60              
             } else {  // end of work or rest period, ie minutes and seconds both === 0                          
                 if ($scope.settingsAlarmWhenTimerExpires) audio.play();            
                 if ($scope.currentlyWorking) { // the end of a working period so set up the next rest period
@@ -167,6 +193,7 @@ app.directive('pomodoro', function() {
           else $scope.hoverMessage = $scope.tasks[currentTaskIndex].name +', '+currentTimerMin+' minutes and '+currentTimerSeconds+' seconds'
           }  // task is complete
 
+          $scope.singleCountdown = ($scope.tomatoTime < 10) ? true : false // used in template to add class
         //console.log(currentTimerSeconds)
       }, 1000);       
 
@@ -296,6 +323,7 @@ app.directive('pomodoro', function() {
         console.log("displayControl() invoked")
         $scope.controlDisplay = true
         $scope.event          = 1
+        $scope.hoverMessage   = 'Use the dashboard to start a task'
       }
 
       $scope.cancelControl = function() {
@@ -303,6 +331,7 @@ app.directive('pomodoro', function() {
           console.log("cancelControl() invoked")
           $scope.controlDisplay = false
           $scope.event          = 8
+          $scope.hoverMessage   = 'Click Me!'
         }
       }
 
